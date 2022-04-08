@@ -213,20 +213,42 @@ const preparacionFinal = async (carro) => {
     return carroExhibido;
 }
 
-const armarCarro = () => {
+const armarCarro = (numeroDelCarro) => {
 
     construirChasis(carro1)
+        // console.log(`Chasis del carro ${numeroDelCarro} construido`)
         .then(montarCarroceria)
+        // console.log(`Carroceria del carro ${numeroDelCarro} montada`)
         .then(preparacionFinal)
+        // console.log(`Carro ${numeroDelCarro} listo para exhibirse`)
         .then((result) => {
-            // console.log(result);
+            console.log(`Carro ${numeroDelCarro} listo ${result}`);
         })
         .catch((error) => {
             console.log(error);
         })
         .finally(() => {
-            console.log("Fabrización Finalizada");
+            console.log(`Fabrización del carro ${numeroDelCarro} Finalizada`);
         });
 }
 
+// const ensamblarCarro = async (numeroDelCarro) => {
 
+//     carro.chasis = await construirChasis();
+//     console.log(`Chasis ${numeroDelCarro} construido`);
+
+//     carro.carroceria = await montarCarroceria();
+//     console.log(`Carroceria ${numeroDelCarro} montada`);
+    
+//     const prepParaEnvio = preparacionFinal();
+//     console.log(`Carro ${numeroDelCarro} enviado y en exhibición`, prepParaEnvio);
+// }
+
+const crearFlota = (numeroDeCarros) => {
+    while (numeroDeCarros > 0) {
+        armarCarro(numeroDeCarros);
+        numeroDeCarros--;
+    };
+};
+
+crearFlota(3);
