@@ -1,8 +1,13 @@
 const express = require('express');
+const product = require("../useCases/product");
 const router = express.Router();
 
-router.get("/", (req, res) => {
-    res.json({message: "Soy todos los productos"});
+router.get("/", async (req, res) => {
+    const products = await product.getAll();
+    res.json({
+        success: true,
+        payload: products,
+    });
 });
 
 router.get("/:id", (req, res) => {
@@ -10,9 +15,19 @@ router.get("/:id", (req, res) => {
     res.json({ message: "Un producto con id:" + id });
 });
 
-router.post("/", (req, res) => {
-    const { name, price } = req.body;
-    res.json({ message: "Producto Creado", payload: { name, price }});
+router.post("/", async (req, res) => {
+    const { name, description, price, image } = req.body;
+    const productCreated = product.create({
+        name,
+        description, 
+        price, 
+        image,
+    });
+    res.json({ 
+        success: true, 
+        message: "Producto Creado", 
+        payload: productCreated,
+    });
 });
 
 router.put("/:id", (req, res) => {
