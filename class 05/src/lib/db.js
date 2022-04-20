@@ -1,7 +1,9 @@
 const mongoose = require('mongoose');
+const config = require("./config");
+
 const connect = () => {
     return new Promise((resolve, reject) => {
-        mongoose.connect("mongodb+srv://Arnold:tiIrRtRxguL636mK@cluster0.owcjk.mongodb.net/kodemiaStore?retryWrites=true&w=majority",
+        mongoose.connect(`mongodb+srv://${config.db.user}:${config.db.password}@${config.db.host}/${config.db.baseCollecion}?retryWrites=true&w=majority`,
         { useNewUrlParser: true }
         );
         const db = mongoose.connection;
@@ -10,7 +12,7 @@ const connect = () => {
             resolve(mongoose);
         });
         db.on("error", (err) => {
-            console.error("Connection failed: ", err);
+            console.error("Connection failed", err);
             reject(err);
         });
     });
