@@ -1,6 +1,9 @@
 const express = require("express");
+const { authHandler } = require("../middlewares/authHandlers");
+const adminHandler = require("../middlewares/permissionHandler");
 const product = require("../useCases/product");
 const router = express.Router();
+
 
 router.get("/", async (req, res, next) => {
     try {
@@ -20,7 +23,12 @@ router.get("/:id", async (req, res) => {
     res.json({ success: true, payload });
 });
 
-router.post("/", async (req, res, next) => {
+// Se coloca antes de los metodos de edidicon para que solo un usuario
+// logueado pueda editar, todas las rutas de abajo estaran protegidas
+// router.use(authHandler)
+
+// Aqui lo colocamos como segundo parameto para proteger solo esta ruta
+router.post("/", authHandler, async (req, res, next) => {
     try {
         const { name, description, price, image, categories } = req.body;
         const productCreated = product.create({
@@ -74,7 +82,7 @@ router.patch("/:id", async (req, res, next) => {
     }
 });
 
-router.delete("/:id", async (req, res, next) => {
+router.delete("/:id", adminHandler, async (req, res, next) => {
     try {
         const { id } = req.params;
         const productDeleted = await product.del(id);

@@ -1,6 +1,9 @@
 const express = require('express');
+const { authHandler } = require('../middlewares/authHandlers');
 const user = require('../useCases/user');
 const router = express.Router();
+
+router.use(authHandler)
 
 router.get("/", (req, res) => {
     res.json({message: "Soy todos los usuarios"});
